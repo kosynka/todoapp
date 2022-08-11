@@ -4,8 +4,8 @@
 
 <div class="container w-50 mt-5">
     <div class="card shadow-sm">
+        <h3 class="text-center card-header mb-1">To Do List</h3>
         <div class="card-body">
-            <h3 class="text-center">To Do List</h3>
             <form action="{{ route('store') }}" method="post" autocomplete="off">
                 <div class="input-group">
                     @csrf
@@ -24,10 +24,10 @@
                             @method('delete')
                             <button type="submit" class="btn btn-outline-danger btn-sm float-end px-3"><i class="fa-solid fa-trash"></i></button>
                         </form>
-                        <form action="{{ route('update', $task->id) }}" method="PUT" class="d-inline">
+                        <form class="d-inline" method="POST">
                             @csrf
                             @method('put')
-                            <button type="submit" class="btn btn-outline-primary btn-sm float-end px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <a href="{{ route('edit', ['task' => $task->id]) }}" class="btn btn-outline-primary btn-sm float-end px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></a>
                         </form>
 
                     </li>

@@ -24,13 +24,19 @@ class TaskController extends Controller
         return back();
     }
 
-    public function update(Request $request, Task $tasks)
+    public function edit($id)
     {
-        $data = Task::find($id);
-        $data->task = $request->input('content');
+        $task = Task::find($id);
+        return view('edit', compact('task'));
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $data = Task::find($task->id);
+        $data->content = $request->input('content');
         $data->update();
 
-        return back()->with('status','Task Updated Successfully');
+        return redirect('/')->with('status', 'Task Updated Successfully');
     }
 
     public function destroy(Task $task)
