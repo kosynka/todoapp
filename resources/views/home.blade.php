@@ -9,33 +9,27 @@
             <form action="{{ route('store') }}" method="post" autocomplete="off">
                 <div class="input-group">
                     @csrf
-                    <input type="text" name="content" class="form-control" placeholder="Your Task">
+                    <input id="task" type="text" name="content" class="form-control" placeholder="Your Task" autofocus>
                     <button type="submit" class="btn btn-outline-success btn-sm px-4"><i class="fa-solid fa-circle-plus"></i></button>
                 </div>
             </form>
-            {{-- INSERT INTO `to_do_lists`(`task`) VALUES ('aaa'), ('bbb'), ('ccc'), ('ddd'); --}}
 
-            @if (count($todolists))
+            @if (count($tasks))
             <ul class="list-group list-group-flush mt-3">
-                @foreach ($todolists as $todolist)
-
-                    {{-- UPDATE --}}
-
-                    {{-- <li class="list-group-item">
-                        <form action="{{ route('update', $todolist->id) }}" method="PUT">
-                            @csrf
-                            @method('put')
-                            <button type="submit" class="btn btn-outline-primary btn-sm px-4 float-end"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </form>
-                    </li> --}}
-
+                @foreach ($tasks as $task)
                     <li class="list-group-item">
-                        <form action="{{ route('destroy', $todolist->id) }}" method="POST">
-                            {{ $todolist->task }}
+                        <form action="{{ route('destroy', $task->id) }}" method="POST" class="d-inline">
+                            {{ $task->content }}
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-outline-danger btn-sm px-4 float-end"><i class="fa-solid fa-trash"></i></button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm float-end px-3"><i class="fa-solid fa-trash"></i></button>
                         </form>
+                        <form action="{{ route('update', $task->id) }}" method="PUT" class="d-inline">
+                            @csrf
+                            @method('put')
+                            <button type="submit" class="btn btn-outline-primary btn-sm float-end px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </form>
+
                     </li>
                 @endforeach
             </ul>
@@ -43,14 +37,14 @@
                 <p class="text-center mt-3">Нет тасков</p>
             @endif
         </div>
-        @if (count($todolists) > 4)
+        @if (count($tasks) > 4)
             <div class="card-footer">
-                У Вас осталось {{ count($todolists) }} заданий
+                У Вас осталось {{ count($tasks) }} заданий
             </div>
         @endif
-        @if ((count($todolists) > 0) && (count($todolists) < 5))
+        @if ((count($tasks) > 0) && (count($tasks) < 5))
             <div class="card-footer">
-                У Вас осталось {{ count($todolists) }} задания
+                У Вас осталось {{ count($tasks) }} задания
             </div>
         @endif
     </div>
