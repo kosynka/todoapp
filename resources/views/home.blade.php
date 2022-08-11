@@ -7,9 +7,10 @@
         <h3 class="text-center card-header mb-1">To Do List</h3>
         <div class="card-body">
             <form action="{{ route('store') }}" method="post" autocomplete="off">
+                @csrf
                 <div class="input-group">
-                    @csrf
-                    <input id="task" type="text" name="content" class="form-control" placeholder="Your Task" autofocus>
+                    <input id="task" type="text" name="content" class="form-control" placeholder="Your Task" autofocus required>
+                    <input id="deadline" type="date" name="deadline" class="form-control btn btn-outline-primary" required>
                     <button type="submit" class="btn btn-outline-success btn-sm px-4"><i class="fa-solid fa-circle-plus"></i></button>
                 </div>
             </form>
@@ -24,10 +25,20 @@
                             @method('delete')
                             <button type="submit" class="btn btn-outline-danger btn-sm float-end px-3"><i class="fa-solid fa-trash"></i></button>
                         </form>
-                        <form class="d-inline" method="POST">
+                        <form class="d-inline float-end" method="POST">
                             @csrf
                             @method('put')
-                            <a href="{{ route('edit', ['task' => $task->id]) }}" class="btn btn-outline-primary btn-sm float-end px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></a>
+
+                            @if ($today > ($task->deadline))
+                                <span class="font-monospace text-danger">опоздали {{ $task->deadline }}</span>                            
+                            @endif
+                            @if ($today < ($task->deadline))
+                                <span class="font-monospace text-success">дедлайн {{ $task->deadline }}</span>
+                            @endif
+                            @if ($today == ($task->deadline))
+                                <span class="font-monospace text-warning">сегодня {{ $task->deadline }}</span> 
+                            @endif
+                            <a href="{{ route('edit', ['task' => $task->id]) }}" class="btn btn-outline-primary btn-sm px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></a>
                         </form>
 
                     </li>

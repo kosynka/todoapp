@@ -10,13 +10,20 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        return view('home', compact('tasks'));
+
+        $encoded_req = json_encode($tasks);
+        $today = date('Y-m-d');
+
+        // dd($today);
+
+        return view('home', compact(['tasks', 'today']));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'content' => 'required|min:1',
+            'content' => 'required',
+            'deadline' => 'required'
         ]);
 
         Task::create($data);

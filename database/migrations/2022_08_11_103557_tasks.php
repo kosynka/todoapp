@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('content');
+            $table->date('deadline');
             $table->timestamps();
         });
     }
