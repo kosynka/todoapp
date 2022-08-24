@@ -15,44 +15,61 @@
                 </div>
             </form>
 
-            @if (count($tasks))
-            <ul class="list-group list-group-flush mt-3">
-                @foreach ($tasks as $task)
-                    <li class="list-group-item">
-                        <form action="{{ route('destroy', $task->id) }}" method="POST" class="d-inline">
-                            {{ $task->content }}
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-outline-danger btn-sm float-end px-3"><i class="fa-solid fa-trash"></i></button>
-                        </form>
-                        <form class="d-inline float-end" method="POST">
-                            @csrf
-                            @method('put')
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                            <th scope="col">Task</th>
+                            <th scope="col">Deadline</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    @if (count($tasks))
+                        <ul class="list-group list-group-flush mt-3">
+                            @foreach ($tasks as $task)
+                                <li class="list-group-item">
+                                    <form action="{{ route('destroy', $task->id) }}" method="POST" class="d-inline">
+                                        {{ $task->content }}
+                                        @csrf
+                                        @method('delete')
 
-                            @if ($today > ($task->deadline))
-                                <span class="font-monospace text-danger">опоздали {{ $task->deadline }}</span>                            
-                            @endif
-                            @if ($today < ($task->deadline))
-                                <span class="font-monospace text-success">дедлайн {{ $task->deadline }}</span>
-                            @endif
-                            @if ($today == ($task->deadline))
-                                <span class="font-monospace text-warning">сегодня {{ $task->deadline }}</span> 
-                            @endif
-                            <a href="{{ route('edit', ['task' => $task->id]) }}" class="btn btn-outline-primary btn-sm px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></a>
-                        </form>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm float-end px-3"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
 
-                    </li>
-                @endforeach
-            </ul>
-            @else
-                <p class="text-center mt-3">Нет тасков</p>
-            @endif
+                                    <form class="d-inline float-end" method="POST">
+                                        @csrf
+                                        @method('put')
+
+                                        @if ($today > ($task->deadline))
+                                            <span class="font-monospace text-danger">опоздали {{ $task->deadline }}</span>                            
+                                        @endif
+
+                                        @if ($today < ($task->deadline))
+                                            <span class="font-monospace text-success">дедлайн {{ $task->deadline }}</span>
+                                        @endif
+
+                                        @if ($today == ($task->deadline))
+                                            <span class="font-monospace text-warning">сегодня {{ $task->deadline }}</span> 
+                                        @endif
+
+                                        <a href="{{ route('edit', ['task' => $task->id]) }}" class="btn btn-outline-primary btn-sm px-3 me-1"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </form>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    @else
+                        <p class="text-center mt-3">Нет тасков</p>
+                    @endif
+            </table>
         </div>
+
         @if (count($tasks) > 4)
             <div class="card-footer">
                 У Вас осталось {{ count($tasks) }} заданий
             </div>
         @endif
+
         @if ((count($tasks) > 0) && (count($tasks) < 5))
             <div class="card-footer">
                 У Вас осталось {{ count($tasks) }} задания
